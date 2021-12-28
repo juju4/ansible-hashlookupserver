@@ -26,7 +26,6 @@
 - import_tasks: nsrl.yml
   when:
     - hashlookupserver_nsrl_download
-    - ansible_service_mgr == 'systemd'
 
 - import_tasks: nginx.yml
   when: hashlookupserver_nginx_enable
