@@ -3,7 +3,7 @@
 - block:
     - name: nginx https configuration
       template:
-        src: "{{ hashlookupserver_nginx_template }}"
+        src: "{{ hashlookupserver_nginx_template }}"
         dest: "{{ apache_sitedir }}/hashlookup-server"
         owner: '0'
         group: '0'
