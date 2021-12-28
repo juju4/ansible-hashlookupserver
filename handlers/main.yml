@@ -3,18 +3,34 @@
 - name: reload systemd
   systemd:
     daemon_reload: yes
+  when: >
+    not (ansible_virtualization_type is defined and
+      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    )
 
 - name: restart kvrocks
   service:
     name: kvrocks
     state: restarted
+  when: >
+    not (ansible_virtualization_type is defined and
+      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    )
 
 - name: restart hashlookup-server
   service:
     name: hashlookupserver
     state: restarted
+  when: >
+    not (ansible_virtualization_type is defined and
+      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    )
 
 - name: restart nginx
   service:
     name: nginx
     state: restarted
+  when: >
+    not (ansible_virtualization_type is defined and
+      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    )
