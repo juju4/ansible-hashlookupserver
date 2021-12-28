@@ -1,0 +1,81 @@
+---
+
+- name: Ensure dependencies packages are present
+  package:
+    name:
+      - git
+      - python3
+      - python3-pip
+      - python3-virtualenv
+    state: present
+
+- name: ensure hashlookup user exists
+  user:
+    name: "{{ hashlookupserver_user }}"
+    home: "{{ hashlookupserver_home }}"
+    system: true
+
+- name: git clone hashlookup-server
+  git:
+    repo: https://github.com/adulau/hashlookup-server.git
+    dest: "{{ hashlookupserver_root }}"
+    version: "{{ hashlookupserver_version }}"
+    update: no
+  become: yes
+  become_user: "{{ hashlookupserver_user }}"
+
+- name: install pip dependencies
+  pip:
+    requirements: "{{ hashlookupserver_root }}/requirements.txt"
+    virtualenv: "{{ hashlookupserver_virtualenv }}"
+    virtualenv_python: "{{ python3_bin }}"
+  register: pkg_result
+  until: pkg_result is success
+  become: yes
+  become_user: "{{ hashlookupserver_user }}"
+
+- name: Ensure kvrocks path is correct
+  replace:
+    path: "{{ hashlookupserver_root }}/bin/run.sh"
+    regexp: "^(.*) -c (.*)$"
+    replace: "{{ kvrocks_bin }} -c {{ hashlookupserver_etc }}/kvrocks.conf"
+    mode: '0755'
+
+- name: Configure kvrocks
+  template:
+    src: kvrocks.conf.j2
+    dest: "{{ hashlookupserver_etc }}/kvrocks.conf"
+    mode: '0644'
+  notify:
+    - restart kvrocks
+
+- name: Set hashlookup-server binding host and etc path
+  replace:
+    path: "{{ hashlookupserver_root }}/bin/server.py"
+    regexp: "{{ item.re }}"
+    replace: "{{ item.rep }}"
+    mode: '0755'
+  loop:
+    - { re: "host='(.*)'.$",
+        rep: "host='{{ hashlookupserver_host }}')"
+    }
+    - { re: "^config.read.'(.*)'.$",
+        rep: "config.read('{{ hashlookupserver_etc }}/server.conf')"
+    }
+  notify:
+    - restart hashlookup-server
+
+- name: Configure hashlookup-server
+  template:
+    src: server.conf.j2
+    dest: "{{ hashlookupserver_etc }}/server.conf"
+    mode: '0644'
+  notify:
+    - restart hashlookup-server
+
+- name: Ensure import.py NSRL path is correct
+  replace:
+    path: "{{ hashlookupserver_root }}/bin/import.py"
+    regexp: "'(.*)', 'r'"
+    replace: "'{{ install_archives }}/rds_modernm/NSRLFile.txt', 'r'"
+    mode: '0755'

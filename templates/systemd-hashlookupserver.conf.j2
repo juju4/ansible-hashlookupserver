@@ -1,0 +1,53 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=Hashlookup-server service
+Requires=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c "{{ hashlookupserver_virtualenv }}/bin/python {{ hashlookupserver_root }}/bin/server.py"
+WorkingDirectory={{ hashlookupserver_root }}/bin
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+SyslogIdentifier=hashlookup-server
+User={{ hashlookupserver_user }}
+Group={{ hashlookupserver_user }}
+
+# Hardening
+NoNewPrivileges=yes
+PrivateTmp=true
+PrivateDevices=yes
+ProtectHome=yes
+ProtectSystem=full
+{% if (ansible_os_family == 'RedHat' and ansible_distribution_major_version|int > 7) or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 18) %}
+InaccessiblePaths=/proc
+ProtectKernelTunables=true
+ProtectKernelModules=yes
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=~user mnt
+LockPersonality=true
+{% endif %}
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+{% if not (ansible_virtualization_type is defined and
+          ansible_virtualization_type == "docker"
+        )
+%}
+{% if (ansible_os_family == 'RedHat' and ansible_distribution_major_version|int >= 8) or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 16) %}
+
+{% if (ansible_os_family == 'RedHat' and ansible_distribution_major_version|int >= 8) or (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 18) %}
+SystemCallFilter=~@debug @mount @cpu-emulation @obsolete @privileged
+{% endif %}
+# When system call is disallowed, return error code instead of killing process
+SystemCallErrorNumber=EPERM
+{% endif %}
+{% endif %}
+{% if hashlookupserver_cgroups_restriction_enable|bool %}
+CPUShares={{ hashlookupserver_cgroups_cpushares | default('1024') }}
+CPUQuota={{ hashlookupserver_cgroups_cpuquota | default('80%') }}
+MemoryLimit={{ hashlookupserver_cgroups_memorylimit | default('4G') }}
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target

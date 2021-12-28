@@ -1,0 +1,52 @@
+---
+
+- name: Download NSRL file
+  get_url:
+    url: "{{ hashlookupserver_nsrl_url }}"
+    dest: "{{ install_archives }}"
+    mode: '0644'
+
+- name: Ensure unzip is present
+  package:
+    name: unzip
+    state: present
+
+- name: Uncompress NSRL file
+  unarchive:
+    src: "{{ install_archives }}/{{ hashlookupserver_nsrl_url | basename }}"
+    dest: "{{ install_archives }}"
+    mode: '0755'
+    remote_src: true
+    creates: "{{ install_archives }}/{{ hashlookupserver_nsrl_test }}"
+
+- name: Ensure hashlookupserver port is opened
+  wait_for:
+    port: 5000
+    timeout: 60
+
+- name: Check if NSRL import marker is present
+  stat:
+    path: "{{ hashlookupserver_home }}/.nsrl-import-done"
+  register: nsrl_mark
+- block:
+    - name: import NSRL file into hashlookup-server
+      command: "{{ hashlookupserver_virtualenv }}/bin/python {{ hashlookupserver_root }}/bin/import.py"
+      async: 3600
+      poll: 0
+      register: importnsrl
+
+    - name: check on async task for import NSRL
+      async_status:
+        jid: "{{ importnsrl.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished or importnsrl.finished
+      retries: 90
+      delay: 60
+      when: importnsrl is changed
+
+    - name: Add NSRL import marker
+      file:
+        path: "{{ hashlookupserver_home }}/.nsrl-import-done"
+        state: touch
+        mode: '0600'
+  when: not nsrl_mark.stat.exists and hashlookupserver_nsrl_import

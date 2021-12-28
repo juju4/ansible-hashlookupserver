@@ -1,0 +1,28 @@
+---
+# defaults file for juju4.hashlookupserver
+
+hashlookupserver_user: _hashlookup
+hashlookupserver_home: /var/_hashlookup
+hashlookupserver_root: "{{ hashlookupserver_home }}/hashlookup-server"
+hashlookupserver_virtualenv: "{{ hashlookupserver_home }}/env-hashlookup"
+hashlookupserver_version: add29e6ca36bb6a474a085de121d65926c54fa8c
+hashlookupserver_etc: "{{ hashlookupserver_root }}/etc"
+hashlookupserver_logs: "{{ hashlookupserver_root }}/logs"
+
+hashlookupserver_host: "localhost"
+#hashlookupserver_host: "0.0.0.0"
+
+hashlookupserver_nsrl_download: true
+hashlookupserver_nsrl_url: https://s3.amazonaws.com/rds.nsrl.nist.gov/RDS/current/rds_modernm.zip
+hashlookupserver_nsrl_test: rds_modernm/NSRLFile.txt
+hashlookupserver_nsrl_import: false
+
+kvrocks_bin: /www/kvrocks/bin/kvrocks
+hashlookupserver_db_dir: "{{ hashlookupserver_home }}/db"
+hashlookupserver_db_logdir: "{{ hashlookupserver_home }}/db"
+
+hashlookupserver_cgroups_restriction_enable: true
+
+hashlookupserver_nginx_enable: false
+hashlookupserver_nginx_template: nginx-hashlookup.conf.j2
+hashlookupserver_nginx_servername: hashlookup

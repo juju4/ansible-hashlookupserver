@@ -1,0 +1,20 @@
+---
+
+- name: reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: restart kvrocks
+  service:
+    name: kvrocks
+    state: restarted
+
+- name: restart hashlookup-server
+  service:
+    name: hashlookupserver
+    state: restarted
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted

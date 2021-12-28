@@ -1,0 +1,5 @@
+---
+
+- src: https://github.com/juju4/ansible-kvrocks/
+  version: master
+  name: juju4.kvrocks

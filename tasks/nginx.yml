@@ -1,0 +1,21 @@
+---
+
+- block:
+    - name: nginx https configuration
+      template:
+        src: "{{ hashlookupserver_nginx_template }}"
+        dest: "{{ apache_sitedir }}/hashlookup-server"
+        owner: '0'
+        group: '0'
+        mode: '0644'
+      notify:
+        - restart nginx
+    - name: enable https
+      file:
+        src: "{{ apache_sitedir }}/hashlookup-server"
+        dest: "/etc/nginx/sites-enabled/hashlookup-server"
+        state: link
+        mode: '0644'
+      notify:
+        - restart nginx
+  when: ansible_os_family == 'Debian'
