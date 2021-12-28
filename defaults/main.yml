@@ -10,7 +10,7 @@ hashlookupserver_etc: "{{ hashlookupserver_root }}/etc"
 hashlookupserver_logs: "{{ hashlookupserver_root }}/logs"
 
 hashlookupserver_host: "localhost"
-#hashlookupserver_host: "0.0.0.0"
+# hashlookupserver_host: "0.0.0.0"
 
 hashlookupserver_nsrl_download: true
 hashlookupserver_nsrl_url: https://s3.amazonaws.com/rds.nsrl.nist.gov/RDS/current/rds_modernm.zip
