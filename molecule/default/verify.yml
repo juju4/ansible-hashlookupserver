@@ -27,6 +27,9 @@
       assert:
         that: cfg2.stat.exists and cfg2.stat.size != 0
 
+    - name: Debug | var=ansible_virtualization_type
+      debug: var=ansible_virtualization_type verbosity=1
+
     - name: Ensure kvrocks process is running
       command: pgrep -u _hashlookup kvrocks
       register: ps
