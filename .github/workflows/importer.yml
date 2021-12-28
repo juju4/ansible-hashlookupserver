@@ -14,6 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       max-parallel: 4
+      experimental: true
     env:
       ANSIBLE_CALLBACK_ENABLED: profile_tasks
       MOLECULE_NO_LOG: "false"
