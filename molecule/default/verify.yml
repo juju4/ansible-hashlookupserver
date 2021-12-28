@@ -2,7 +2,7 @@
 
 - name: Verify
   hosts: hashlookup
-  gather_facts: false
+  gather_facts: true
   tasks:
     - name: Gather package facts
       package_facts:
