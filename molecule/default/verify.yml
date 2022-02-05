@@ -56,6 +56,11 @@
               (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
             )
 
+    - name: Ensure procps package is present
+      package:
+        name: procps
+        state: present
+      when: ansible_os_family == "RedHat"
     - name: check all processes
       command: ps aux
       changed_when: false
