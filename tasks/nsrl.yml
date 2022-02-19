@@ -29,7 +29,7 @@
         port: 5000
         timeout: 60
 
-    - name: import NSRL file into hashlookup-server
+    - name: import NSRL file into hashlookup-server  # noqa no-changed-when
       command: "{{ hashlookupserver_virtualenv }}/bin/python {{ hashlookupserver_root }}/bin/import.py"
       async: 3600
       poll: 0
