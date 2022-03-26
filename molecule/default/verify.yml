@@ -5,38 +5,38 @@
   gather_facts: true
   tasks:
     - name: Gather package facts
-      package_facts:
+      ansible.builtin.package_facts:
         manager: auto
     - name: Validate that needed packages are present
-      assert:
+      ansible.builtin.assert:
         that: ansible_facts.packages['kvrocks']
 
     - name: Check kvrocks config file
-      stat:
+      ansible.builtin.stat:
         path: /var/_hashlookup/hashlookup-server/etc/kvrocks.conf
       register: cfg1
     - name: Validate kvrocks config present
-      assert:
+      ansible.builtin.assert:
         that: cfg1.stat.exists and cfg1.stat.size != 0
 
     - name: Check hashlookup-server config file
-      stat:
+      ansible.builtin.stat:
         path: /var/_hashlookup/hashlookup-server/etc/server.conf
       register: cfg2
     - name: Validate hashlookup-server config present
-      assert:
+      ansible.builtin.assert:
         that: cfg2.stat.exists and cfg2.stat.size != 0
 
     - name: Debug | var=ansible_virtualization_type
-      debug: var=ansible_virtualization_type verbosity=1
+      ansible.builtin.debug: var=ansible_virtualization_type verbosity=1
 
     - name: Ensure kvrocks process is running
-      command: pgrep -u _hashlookup kvrocks
+      ansible.builtin.command: pgrep -u _hashlookup kvrocks
       register: ps
       changed_when: false
       failed_when: false
     - name: Validate ps output
-      assert:
+      ansible.builtin.assert:
         that: ps.stdout
       when: >
         not (ansible_virtualization_type is defined and
@@ -44,12 +44,12 @@
             )
 
     - name: Ensure hashlookup python process is running
-      command: pgrep -u _hashlookup python
+      ansible.builtin.command: pgrep -u _hashlookup python
       register: ps2
       changed_when: false
       failed_when: false
     - name: Validate hashlookup ps output
-      assert:
+      ansible.builtin.assert:
         that: ps2.stdout
       when: >
         not (ansible_virtualization_type is defined and
@@ -57,19 +57,19 @@
             )
 
     - name: Ensure procps package is present
-      package:
+      ansible.builtin.package:
         name: procps
         state: present
       when: ansible_os_family == "RedHat"
     - name: check all processes
-      command: ps aux
+      ansible.builtin.command: ps aux
       changed_when: false
       register: psa
     - name: Debug | process output
-      debug: var=psa verbosity=1
+      ansible.builtin.debug: var=psa verbosity=1
 
     - name: Ensure ports are listening
-      wait_for:
+      ansible.builtin.wait_for:
         host: "{{ item.h }}"
         port: "{{ item.p }}"
         timeout: 10
@@ -82,7 +82,7 @@
             )
 
     - name: Check hashlookup-server info page works
-      uri:
+      ansible.builtin.uri:
         url: http://localhost:5000/info
         return_content: yes
         headers:

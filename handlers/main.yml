@@ -1,7 +1,7 @@
 ---
 
 - name: reload systemd
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: yes
   when: >
     not (ansible_virtualization_type is defined and
@@ -9,7 +9,7 @@
     )
 
 - name: restart kvrocks
-  service:
+  ansible.builtin.service:
     name: kvrocks
     state: restarted
   when: >
@@ -18,7 +18,7 @@
     )
 
 - name: restart hashlookup-server
-  service:
+  ansible.builtin.service:
     name: hashlookupserver
     state: restarted
   when: >
@@ -27,7 +27,7 @@
     )
 
 - name: restart nginx
-  service:
+  ansible.builtin.service:
     name: nginx
     state: restarted
   when: >

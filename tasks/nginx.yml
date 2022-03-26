@@ -2,7 +2,7 @@
 
 - block:
     - name: nginx https configuration
-      template:
+      ansible.builtin.template:
         src: "{{ hashlookupserver_nginx_template }}"
         dest: "{{ apache_sitedir }}/hashlookup-server"
         owner: '0'
@@ -11,7 +11,7 @@
       notify:
         - restart nginx
     - name: enable https
-      file:
+      ansible.builtin.file:
         src: "{{ apache_sitedir }}/hashlookup-server"
         dest: "/etc/nginx/sites-enabled/hashlookup-server"
         state: link

@@ -1,7 +1,7 @@
 ---
 
 - name: Ensure dependencies packages are present
-  package:
+  ansible.builtin.package:
     name:
       - git
       - python3
@@ -10,13 +10,13 @@
     state: present
 
 - name: ensure hashlookup user exists
-  user:
+  ansible.builtin.user:
     name: "{{ hashlookupserver_user }}"
     home: "{{ hashlookupserver_home }}"
     system: true
 
 - name: git clone hashlookup-server
-  git:
+  ansible.builtin.git:
     repo: https://github.com/adulau/hashlookup-server.git
     dest: "{{ hashlookupserver_root }}"
     version: "{{ hashlookupserver_version }}"
@@ -25,7 +25,7 @@
   become_user: "{{ hashlookupserver_user }}"
 
 - name: install pip dependencies
-  pip:
+  ansible.builtin.pip:
     requirements: "{{ hashlookupserver_root }}/requirements.txt"
     virtualenv: "{{ hashlookupserver_virtualenv }}"
     virtualenv_python: "{{ python3_bin }}"
@@ -35,14 +35,14 @@
   become_user: "{{ hashlookupserver_user }}"
 
 - name: Ensure kvrocks path is correct
-  replace:
+  ansible.builtin.replace:
     path: "{{ hashlookupserver_root }}/bin/run.sh"
     regexp: "^(.*) -c (.*)$"
     replace: "{{ kvrocks_bin }} -c {{ hashlookupserver_etc }}/kvrocks.conf"
     mode: '0755'
 
 - name: Configure kvrocks
-  template:
+  ansible.builtin.template:
     src: kvrocks.conf.j2
     dest: "{{ hashlookupserver_etc }}/kvrocks.conf"
     mode: '0644'
@@ -50,7 +50,7 @@
     - restart kvrocks
 
 - name: Set hashlookup-server binding host and etc path
-  replace:
+  ansible.builtin.replace:
     path: "{{ hashlookupserver_root }}/bin/server.py"
     regexp: "{{ item.re }}"
     replace: "{{ item.rep }}"
@@ -66,7 +66,7 @@
     - restart hashlookup-server
 
 - name: Configure hashlookup-server
-  template:
+  ansible.builtin.template:
     src: server.conf.j2
     dest: "{{ hashlookupserver_etc }}/server.conf"
     mode: '0644'
@@ -74,7 +74,7 @@
     - restart hashlookup-server
 
 - name: Ensure import.py NSRL path is correct
-  replace:
+  ansible.builtin.replace:
     path: "{{ hashlookupserver_root }}/bin/import.py"
     regexp: "'(.*)', 'r'"
     replace: "'{{ install_archives }}/rds_modernm/NSRLFile.txt', 'r'"

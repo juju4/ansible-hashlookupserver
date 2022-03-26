@@ -1,13 +1,13 @@
 ---
 
 - name: Ensure systemd folder exists
-  file:
+  ansible.builtin.file:
     dest: /etc/systemd/system
     state: directory
     mode: '0755'
 
 - name: Ensure systemd unit files are configured
-  template:
+  ansible.builtin.template:
     src: "systemd-{{ item }}.conf.j2"
     dest: "/etc/systemd/system/{{ item }}.service"
     mode: '0644'
@@ -20,7 +20,7 @@
     - restart hashlookup-server
 
 - name: Ensure services are enabled and started
-  service:
+  ansible.builtin.service:
     name: "{{ item }}"
     state: started
     enabled: yes
