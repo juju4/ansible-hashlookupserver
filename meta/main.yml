@@ -3,11 +3,11 @@ galaxy_info:
   author: juju4
   description: Install hashlookup-server, minimal and fast open source server (ReST/API) to lookup quickly hash value from large dataset.
   license: BSD
-  min_ansible_version: 2.1
+  min_ansible_version: '2.1'
   platforms:
     - name: EL
       versions:
-        - 8
+        - all
     - name: Ubuntu
       versions:
         - focal

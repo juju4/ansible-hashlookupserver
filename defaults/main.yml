@@ -3,11 +3,11 @@
 
 hashlookupserver_user: _hashlookup
 hashlookupserver_home: /var/_hashlookup
-hashlookupserver_root: "{{ hashlookupserver_home }}/hashlookup-server"
-hashlookupserver_virtualenv: "{{ hashlookupserver_home }}/env-hashlookup"
+hashlookupserver_root: "{{ hashlookupserver_home }}/hashlookup-server"
+hashlookupserver_virtualenv: "{{ hashlookupserver_home }}/env-hashlookup"
 hashlookupserver_version: add29e6ca36bb6a474a085de121d65926c54fa8c
-hashlookupserver_etc: "{{ hashlookupserver_root }}/etc"
-hashlookupserver_logs: "{{ hashlookupserver_root }}/logs"
+hashlookupserver_etc: "{{ hashlookupserver_root }}/etc"
+hashlookupserver_logs: "{{ hashlookupserver_root }}/logs"
 
 hashlookupserver_host: "localhost"
 # hashlookupserver_host: "0.0.0.0"

@@ -1,6 +1,7 @@
 ---
 
-- block:
+- name: Debian
+  block:
     - name: nginx https configuration
       ansible.builtin.template:
         src: "{{ hashlookupserver_nginx_template }}"
