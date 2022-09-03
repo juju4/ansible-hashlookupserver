@@ -9,13 +9,13 @@
       - python3-virtualenv
     state: present
 
-- name: ensure hashlookup user exists
+- name: Ensure hashlookup user exists
   ansible.builtin.user:
     name: "{{ hashlookupserver_user }}"
     home: "{{ hashlookupserver_home }}"
     system: true
 
-- name: git clone hashlookup-server
+- name: Git clone hashlookup-server
   ansible.builtin.git:
     repo: https://github.com/adulau/hashlookup-server.git
     dest: "{{ hashlookupserver_root }}"
@@ -24,7 +24,7 @@
   become: yes
   become_user: "{{ hashlookupserver_user }}"
 
-- name: install pip dependencies
+- name: Install pip dependencies
   ansible.builtin.pip:
     requirements: "{{ hashlookupserver_root }}/requirements.txt"
     virtualenv: "{{ hashlookupserver_virtualenv }}"
@@ -47,7 +47,7 @@
     dest: "{{ hashlookupserver_etc }}/kvrocks.conf"
     mode: '0644'
   notify:
-    - restart kvrocks
+    - Restart kvrocks
 
 - name: Set hashlookup-server binding host and etc path
   ansible.builtin.replace:
@@ -63,7 +63,7 @@
         rep: "config.read('{{ hashlookupserver_etc }}/server.conf')"
     }
   notify:
-    - restart hashlookup-server
+    - Restart hashlookup-server
 
 - name: Configure hashlookup-server
   ansible.builtin.template:
@@ -71,7 +71,7 @@
     dest: "{{ hashlookupserver_etc }}/server.conf"
     mode: '0644'
   notify:
-    - restart hashlookup-server
+    - Restart hashlookup-server
 
 - name: Ensure import.py NSRL path is correct
   ansible.builtin.replace:

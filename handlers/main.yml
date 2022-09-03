@@ -1,6 +1,6 @@
 ---
 
-- name: reload systemd
+- name: Reload systemd
   ansible.builtin.systemd:
     daemon_reload: yes
   when: >
@@ -8,7 +8,7 @@
       (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
     )
 
-- name: restart kvrocks
+- name: Restart kvrocks
   ansible.builtin.service:
     name: kvrocks
     state: restarted
@@ -17,7 +17,7 @@
       (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
     )
 
-- name: restart hashlookup-server
+- name: Restart hashlookup-server
   ansible.builtin.service:
     name: hashlookupserver
     state: restarted
@@ -26,7 +26,7 @@
       (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
     )
 
-- name: restart nginx
+- name: Restart nginx
   ansible.builtin.service:
     name: nginx
     state: restarted

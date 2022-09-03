@@ -15,9 +15,9 @@
     - kvrocks
     - hashlookupserver
   notify:
-    - reload systemd
-    - restart kvrocks
-    - restart hashlookup-server
+    - Reload systemd
+    - Restart kvrocks
+    - Restart hashlookup-server
 
 - name: Ensure services are enabled and started
   ansible.builtin.service:

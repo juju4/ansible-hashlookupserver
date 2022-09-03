@@ -2,7 +2,7 @@
 
 - name: Debian
   block:
-    - name: nginx https configuration
+    - name: Nginx https configuration
       ansible.builtin.template:
         src: "{{ hashlookupserver_nginx_template }}"
         dest: "{{ apache_sitedir }}/hashlookup-server"
@@ -10,13 +10,13 @@
         group: '0'
         mode: '0644'
       notify:
-        - restart nginx
-    - name: enable https
+        - Restart nginx
+    - name: Enable https
       ansible.builtin.file:
         src: "{{ apache_sitedir }}/hashlookup-server"
         dest: "/etc/nginx/sites-enabled/hashlookup-server"
         state: link
         mode: '0644'
       notify:
-        - restart nginx
+        - Restart nginx
   when: ansible_os_family == 'Debian'
