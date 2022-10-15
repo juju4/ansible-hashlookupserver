@@ -28,7 +28,9 @@
         that: cfg2.stat.exists and cfg2.stat.size != 0
 
     - name: Debug | var=ansible_virtualization_type
-      ansible.builtin.debug: var=ansible_virtualization_type verbosity=1
+      ansible.builtin.debug:
+        var: ansible_virtualization_type
+        verbosity: 1
 
     - name: Ensure kvrocks process is running
       ansible.builtin.command: pgrep -u _hashlookup kvrocks
@@ -66,7 +68,9 @@
       changed_when: false
       register: psa
     - name: Debug | process output
-      ansible.builtin.debug: var=psa verbosity=1
+      ansible.builtin.debug:
+        var: psa
+        verbosity: 1
 
     - name: Ensure ports are listening
       ansible.builtin.wait_for:

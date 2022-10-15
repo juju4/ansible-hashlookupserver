@@ -24,6 +24,12 @@
     path: "{{ hashlookupserver_home }}/.nsrl-import-done"
   register: nsrl_mark
 - name: Import
+  when: >
+    not nsrl_mark.stat.exists and hashlookupserver_nsrl_import and
+    ansible_service_mgr == 'systemd' and
+    not (ansible_virtualization_type is defined and
+      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    )
   block:
     - name: Ensure hashlookupserver port is opened
       ansible.builtin.wait_for:
@@ -50,9 +56,3 @@
         path: "{{ hashlookupserver_home }}/.nsrl-import-done"
         state: touch
         mode: '0600'
-  when: >
-    not nsrl_mark.stat.exists and hashlookupserver_nsrl_import and
-    ansible_service_mgr == 'systemd' and
-    not (ansible_virtualization_type is defined and
-      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
-    )

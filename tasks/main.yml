@@ -14,18 +14,22 @@
   ansible.builtin.include_vars: "Alpine.yml"
   when: ansible_os_family == "Alpine"
 
-- import_tasks: hashlookup-server.yml
+- name: Import hashlookup-server
+  ansible.builtin.import_tasks: hashlookup-server.yml
 
-- import_tasks: systemd.yml
+- name: Import systemd
+  ansible.builtin.import_tasks: systemd.yml
   when: >
     ansible_service_mgr == 'systemd' and
     not (ansible_virtualization_type is defined and
       (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
     )
 
-- import_tasks: nsrl.yml
+- name: Import nsrl
+  ansible.builtin.import_tasks: nsrl.yml
   when:
     - hashlookupserver_nsrl_download
 
-- import_tasks: nginx.yml
+- name: Import nginx
+  ansible.builtin.import_tasks: nginx.yml
   when: hashlookupserver_nginx_enable

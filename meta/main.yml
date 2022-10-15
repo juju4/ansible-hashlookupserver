@@ -1,6 +1,7 @@
 ---
 galaxy_info:
   author: juju4
+  role_name: hashlookupserver
   description: Install hashlookup-server, minimal and fast open source server (ReST/API) to lookup quickly hash value from large dataset.
   license: BSD
   min_ansible_version: '2.1'
@@ -15,4 +16,4 @@ galaxy_info:
     - security
     - forensics
 dependencies:
-  - juju4.kvrocks
+  - role: juju4.kvrocks
