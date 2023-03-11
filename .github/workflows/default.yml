@@ -59,6 +59,11 @@ jobs:
           pwd
           env
           find -ls
+          df -h
+      - name: Free disk space
+        run: |
+          sudo rm -Rf /usr/local/lib/android
+          df -h
       - name: run test
         run: |
           cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && molecule test
