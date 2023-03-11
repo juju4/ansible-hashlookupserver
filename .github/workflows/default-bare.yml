@@ -55,7 +55,9 @@ jobs:
         run: |
           set -x
           ls /usr/local
+          for d in /usr/local/*; do du -hx "$d" | tail -1; done
           ls /opt
+          for d in /opt/*; do du -hx "$d" | tail -1; done
           sudo rm -Rf /usr/local/lib/android
           sudo rm -Rf /home/linuxbrew
           df -h

@@ -48,6 +48,19 @@ jobs:
           pwd
           env
           find -ls
+          df -h
+      - name: Free disk space
+        run: |
+          set -x
+          ls /usr/local
+          for d in /usr/local/*; do du -hx "$d" | tail -1; done
+          ls /opt
+          for d in /opt/*; do du -hx "$d" | tail -1; done
+          sudo rm -Rf /usr/local/lib/android
+          sudo rm -Rf /home/linuxbrew
+          df -h
+          sudo docker image prune -a -f
+          df -h
       - name: hashlookup-server install
         run: |
           cd $GITHUB_WORKSPACE/juju4.hashlookupserver && ansible-playbook -i localhost, --connection=local --become -vvv molecule/default/converge.yml
