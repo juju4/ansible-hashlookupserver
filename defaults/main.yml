@@ -13,7 +13,8 @@ hashlookupserver_host: "localhost"
 # hashlookupserver_host: "0.0.0.0"
 
 hashlookupserver_nsrl_download: true
-hashlookupserver_nsrl_url: https://s3.amazonaws.com/rds.nsrl.nist.gov/RDS/current/rds_modernm.zip
+# https://www.nist.gov/itl/ssd/software-quality-group/national-software-reference-library-nsrl/nsrl-download/current-rds
+hashlookupserver_nsrl_url: https://s3.amazonaws.com/rds.nsrl.nist.gov/RDS/rds_2023.03.1/RDS_2023.03.1_modern_minimal.zip
 hashlookupserver_nsrl_test: rds_modernm/NSRLFile.txt
 hashlookupserver_nsrl_import: false
 
