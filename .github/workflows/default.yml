@@ -62,7 +62,13 @@ jobs:
           df -h
       - name: Free disk space
         run: |
+          set -x
+          ls /usr/local
+          ls /opt
           sudo rm -Rf /usr/local/lib/android
+          sudo rm -Rf /home/linuxbrew
+          df -h
+          sudo docker image prune -a -f
           df -h
       - name: run test
         run: |
