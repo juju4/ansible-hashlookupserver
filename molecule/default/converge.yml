@@ -33,4 +33,5 @@
         var: ansible_virtualization_type
         verbosity: 1
   roles:
+    - { role: juju4.redhat_epel, when: ansible_os_family == 'RedHat' }
     - juju4.hashlookupserver
