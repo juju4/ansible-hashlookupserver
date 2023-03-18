@@ -4,3 +4,6 @@ roles:
   - src: https://github.com/juju4/ansible-kvrocks/
     version: main
     name: juju4.kvrocks
+  - src: https://github.com/juju4/ansible-redhat-epel/
+    version: main
+    name: juju4.redhat_epel
