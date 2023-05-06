@@ -37,13 +37,14 @@
         timeout: 60
 
     - name: Import NSRL file into hashlookup-server  # noqa no-changed-when
-      ansible.builtin.command: "{{ hashlookupserver_virtualenv }}/bin/python {{ hashlookupserver_root }}/bin/import.py"
+      ansible.builtin.command:
+        cmd: "{{ hashlookupserver_virtualenv }}/bin/python {{ hashlookupserver_root }}/bin/import.py"
       async: 3600
       poll: 0
       register: importnsrl
 
     - name: Check on async task for import NSRL
-      ansible.builtin.async_status:
+      ansible.builtin.async_status:  # noqa no-handler
         jid: "{{ importnsrl.ansible_job_id }}"
       register: job_result
       until: job_result.finished or importnsrl.finished
