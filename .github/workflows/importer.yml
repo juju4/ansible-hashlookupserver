@@ -22,7 +22,7 @@ jobs:
       ANSIBLE_CALLBACK_ENABLED: profile_tasks
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: juju4.hashlookupserver
       - name: Set up Python
