@@ -46,9 +46,9 @@ SystemCallErrorNumber=EPERM
 {% endif %}
 {% endif %}
 {% if hashlookupserver_cgroups_restriction_enable|bool %}
-CPUShares={{ hashlookupserver_cgroups_cpushares | default('1024') }}
+CPUWeight={{ hashlookupserver_cgroups_cpushares | default('1024') }}
 CPUQuota={{ hashlookupserver_cgroups_cpuquota | default('80%') }}
-MemoryLimit={{ hashlookupserver_cgroups_memorylimit | default('4G') }}
+MemoryMax={{ hashlookupserver_cgroups_memorylimit | default('4G') }}
 {% endif %}
 
 [Install]
