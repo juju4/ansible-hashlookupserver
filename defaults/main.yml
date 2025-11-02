@@ -5,7 +5,8 @@ hashlookupserver_user: _hashlookup
 hashlookupserver_home: /var/_hashlookup
 hashlookupserver_root: "{{ hashlookupserver_home }}/hashlookup-server"
 hashlookupserver_virtualenv: "{{ hashlookupserver_home }}/env-hashlookup"
-hashlookupserver_version: add29e6ca36bb6a474a085de121d65926c54fa8c
+# renovate: datasource=github-releases depName=adulau/hashlookup-server
+hashlookupserver_version: '417dd318fae497b49a43b19a060e623346a9c5a7'
 hashlookupserver_etc: "{{ hashlookupserver_root }}/etc"
 hashlookupserver_logs: "{{ hashlookupserver_root }}/logs"
 
