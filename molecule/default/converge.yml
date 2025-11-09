@@ -32,6 +32,10 @@
       ansible.builtin.debug:
         var: ansible_virtualization_type
         verbosity: 1
+    - name: RedHat | Set fact
+      ansible.builtin.set_fact:
+        kvrocks_disable_gpg_check: true
+      when: ansible_os_family == 'RedHat'
   roles:
     - { role: juju4.redhat_epel, when: ansible_os_family == 'RedHat' }
     - juju4.hashlookupserver
