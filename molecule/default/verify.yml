@@ -9,7 +9,8 @@
         manager: auto
     - name: Validate that needed packages are present
       ansible.builtin.assert:
-        that: ansible_facts.packages['kvrocks']
+        that:
+          - ansible_facts.packages['kvrocks'] is defined
 
     - name: Check kvrocks config file
       ansible.builtin.stat:
@@ -52,7 +53,7 @@
       failed_when: false
     - name: Validate hashlookup ps output
       ansible.builtin.assert:
-        that: ps2.stdout
+        that: ps2.stdout | length > 0
       when: >
         not (ansible_virtualization_type is defined and
               (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
