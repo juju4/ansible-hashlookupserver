@@ -1,12 +1,10 @@
 ---
-name: importer
+name: importer-monthly
 
 on:
-  push:
-  pull_request:
   workflow_dispatch:
-  schedule:  # run weekly, every Thursday 01:00
-    - cron: '0 1 * * 4'
+  schedule:  # run on the 11th of the month at 01:00 UTC
+    - cron: '0 1 11 * *'
   merge_group:
 
 concurrency:
@@ -23,7 +21,7 @@ jobs:
     continue-on-error: true  # experimental
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 2
     env:
       ANSIBLE_CALLBACK_ENABLED: profile_tasks
       MOLECULE_NO_LOG: "false"
