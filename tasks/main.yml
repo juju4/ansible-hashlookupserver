@@ -2,17 +2,17 @@
 # tasks file for juju4.hashlookupserver
 
 - name: Include version-specific variables for Ubuntu.
-  ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
-  when: ansible_distribution == 'Ubuntu'
+  ansible.builtin.include_vars: "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_version'] }}.yml"
+  when: ansible_facts['distribution'] == 'Ubuntu'
 - name: Include version-specific variables for Debian.
-  ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-  when: ansible_distribution == 'Debian'
+  ansible.builtin.include_vars: "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_major_version'] }}.yml"
+  when: ansible_facts['distribution'] == 'Debian'
 - name: Include version-specific variables for RedHat
-  ansible.builtin.include_vars: "RedHat-{{ ansible_distribution_version.split('.')[0] }}.yml"
-  when: ansible_os_family == "RedHat"
+  ansible.builtin.include_vars: "RedHat-{{ ansible_facts['distribution_major_version'] }}.yml"
+  when: ansible_facts['os_family'] == "RedHat"
 - name: Include version-specific variables for Alpine
   ansible.builtin.include_vars: "Alpine.yml"
-  when: ansible_os_family == "Alpine"
+  when: ansible_facts['os_family'] == "Alpine"
 
 - name: Import hashlookup-server
   ansible.builtin.import_tasks: hashlookup-server.yml
@@ -20,9 +20,9 @@
 - name: Import systemd
   ansible.builtin.import_tasks: systemd.yml
   when: >
-    ansible_service_mgr == 'systemd' and
-    not (ansible_virtualization_type is defined and
-      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    ansible_facts['service_mgr'] == 'systemd' and
+    not (ansible_facts['virtualization_type'] is defined and
+      (ansible_facts['virtualization_type'] == "docker" or ansible_facts['virtualization_type'] == "containerd")
     )
 
 - name: Import nsrl
