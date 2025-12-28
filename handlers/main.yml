@@ -4,8 +4,8 @@
   ansible.builtin.systemd:
     daemon_reload: yes
   when: >
-    not (ansible_virtualization_type is defined and
-      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    not (ansible_facts['facts']['virtualization_type'] is defined and
+      (ansible_facts['facts']['virtualization_type'] == "docker" or ansible_facts['facts']['virtualization_type'] == "containerd")
     )
 
 - name: Restart kvrocks
@@ -13,8 +13,8 @@
     name: kvrocks
     state: restarted
   when: >
-    not (ansible_virtualization_type is defined and
-      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    not (ansible_facts['facts']['virtualization_type'] is defined and
+      (ansible_facts['facts']['virtualization_type'] == "docker" or ansible_facts['facts']['virtualization_type'] == "containerd")
     )
 
 - name: Restart hashlookup-server
@@ -22,8 +22,8 @@
     name: hashlookupserver
     state: restarted
   when: >
-    not (ansible_virtualization_type is defined and
-      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    not (ansible_facts['facts']['virtualization_type'] is defined and
+      (ansible_facts['facts']['virtualization_type'] == "docker" or ansible_facts['facts']['virtualization_type'] == "containerd")
     )
 
 - name: Restart nginx
@@ -31,6 +31,6 @@
     name: nginx
     state: restarted
   when: >
-    not (ansible_virtualization_type is defined and
-      (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+    not (ansible_facts['facts']['virtualization_type'] is defined and
+      (ansible_facts['facts']['virtualization_type'] == "docker" or ansible_facts['facts']['virtualization_type'] == "containerd")
     )

@@ -28,9 +28,9 @@
       ansible.builtin.assert:
         that: cfg2.stat.exists and cfg2.stat.size != 0
 
-    - name: Debug | var=ansible_virtualization_type
+    - name: Debug | var=ansible_facts['virtualization_type']
       ansible.builtin.debug:
-        var: ansible_virtualization_type
+        var: ansible_facts['virtualization_type']
         verbosity: 1
 
     - name: Ensure kvrocks process is running
@@ -42,8 +42,8 @@
       ansible.builtin.assert:
         that: ps.stdout | length > 0
       when: >
-        not (ansible_virtualization_type is defined and
-              (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+        not (ansible_facts['virtualization_type'] is defined and
+              (ansible_facts['virtualization_type'] == "docker" or ansible_facts['virtualization_type'] == "containerd")
             )
 
     - name: Ensure hashlookup python process is running
@@ -55,15 +55,15 @@
       ansible.builtin.assert:
         that: ps2.stdout | length > 0
       when: >
-        not (ansible_virtualization_type is defined and
-              (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+        not (ansible_facts['virtualization_type'] is defined and
+              (ansible_facts['virtualization_type'] == "docker" or ansible_facts['virtualization_type'] == "containerd")
             )
 
     - name: Ensure procps package is present
       ansible.builtin.package:
         name: procps
         state: present
-      when: ansible_os_family == "RedHat"
+      when: ansible_facts['os_family'] == "RedHat"
     - name: Check all processes
       ansible.builtin.command: ps aux
       changed_when: false
@@ -82,8 +82,8 @@
         - { h: localhost, p: "6666" }
         - { h: localhost, p: "5000" }
       when: >
-        not (ansible_virtualization_type is defined and
-              (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+        not (ansible_facts['virtualization_type'] is defined and
+              (ansible_facts['virtualization_type'] == "docker" or ansible_facts['virtualization_type'] == "containerd")
             )
 
     - name: Check hashlookup-server info page works
@@ -95,6 +95,6 @@
       register: info
       failed_when: "'stat:hashlookup_total_keys' not in info.content"
       when: >
-        not (ansible_virtualization_type is defined and
-              (ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd")
+        not (ansible_facts['virtualization_type'] is defined and
+              (ansible_facts['virtualization_type'] == "docker" or ansible_facts['virtualization_type'] == "containerd")
             )
