@@ -1,7 +1,7 @@
-[![Actions Status - Master](https://github.com/juju4/ansible-hashlookupserver/workflows/AnsibleCI/badge.svg)](https://github.com/juju4/ansible-adduser/actions?query=branch%3Amaster)
-[![Actions Status - Devel](https://github.com/juju4/ansible-hashlookupserver/workflows/AnsibleCI/badge.svg?branch=devel)](https://github.com/juju4/ansible-adduser/actions?query=branch%3Adevel)
-
 # hashlookupserver ansible role
+
+[![Actions Status - Main](https://github.com/juju4/ansible-hashlookupserver/workflows/AnsibleCI/badge.svg)](https://github.com/juju4/ansible-adduser/actions?query=branch%3Amain)
+[![Actions Status - Devel](https://github.com/juju4/ansible-hashlookupserver/workflows/AnsibleCI/badge.svg?branch=devel)](https://github.com/juju4/ansible-adduser/actions?query=branch%3Adevel)
 
 Setup https://github.com/adulau/hashlookup-server
 
