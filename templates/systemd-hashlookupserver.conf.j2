@@ -9,7 +9,6 @@ ExecStart=/bin/sh -c "{{ hashlookupserver_virtualenv }}/bin/python {{ hashlookup
 WorkingDirectory={{ hashlookupserver_root }}/bin
 Restart=always
 RestartSec=10
-StandardOutput=syslog
 SyslogIdentifier=hashlookup-server
 User={{ hashlookupserver_user }}
 Group={{ hashlookupserver_user }}
