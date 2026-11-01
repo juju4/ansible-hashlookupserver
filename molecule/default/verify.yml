@@ -3,6 +3,36 @@
 - name: Verify
   hosts: hashlookup
   gather_facts: true
+  vars:
+    is_container: false
+  pre_tasks:
+    - name: RedHat | Ensure ps and host are present
+      ansible.builtin.package:
+        name:
+          - procps-ng
+          - bind-utils
+        state: present
+      when: ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] | int >= 8
+    - name: Debian | Ensure ps and host present
+      ansible.builtin.package:
+        name:
+          - procps
+          - dnsutils
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
+    - name: Debug | var ansible_facts['virtualization_type']
+      ansible.builtin.debug:
+        var: ansible_facts['virtualization_type']
+    - name: Set fact is_container
+      ansible.builtin.set_fact:
+        is_container: true
+      when: >
+        (ansible_facts['virtualization_type'] is defined and
+          (ansible_facts['virtualization_type'] == "docker"
+           or ansible_facts['virtualization_type'] == "containerd"
+           or ansible_facts['virtualization_type'] == "container"
+          )
+        )
   tasks:
     - name: Gather package facts
       ansible.builtin.package_facts:
@@ -41,10 +71,8 @@
     - name: Validate ps output
       ansible.builtin.assert:
         that: ps.stdout | length > 0
-      when: >
-        not (ansible_facts['virtualization_type'] is defined and
-              (ansible_facts['virtualization_type'] == "docker" or ansible_facts['virtualization_type'] == "containerd")
-            )
+      when:
+        - not is_container|bool
 
     - name: Ensure hashlookup python process is running
       ansible.builtin.command: pgrep -u _hashlookup python
@@ -54,10 +82,8 @@
     - name: Validate hashlookup ps output
       ansible.builtin.assert:
         that: ps2.stdout | length > 0
-      when: >
-        not (ansible_facts['virtualization_type'] is defined and
-              (ansible_facts['virtualization_type'] == "docker" or ansible_facts['virtualization_type'] == "containerd")
-            )
+      when:
+        - not is_container|bool
 
     - name: Ensure procps package is present
       ansible.builtin.package:
@@ -81,10 +107,8 @@
       with_items:
         - { h: localhost, p: "6666" }
         - { h: localhost, p: "5000" }
-      when: >
-        not (ansible_facts['virtualization_type'] is defined and
-              (ansible_facts['virtualization_type'] == "docker" or ansible_facts['virtualization_type'] == "containerd")
-            )
+      when:
+        - not is_container|bool
 
     - name: Check hashlookup-server info page works
       ansible.builtin.uri:
@@ -94,7 +118,5 @@
           Content-Type: application/json
       register: info
       failed_when: "'stat:hashlookup_total_keys' not in info.content"
-      when: >
-        not (ansible_facts['virtualization_type'] is defined and
-              (ansible_facts['virtualization_type'] == "docker" or ansible_facts['virtualization_type'] == "containerd")
-            )
+      when:
+        - not is_container|bool
